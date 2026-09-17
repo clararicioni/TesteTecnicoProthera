@@ -41,7 +41,7 @@ public class Principal {
                 new BigDecimal("2284.38"), "Operador"));
 
         funcionarios.add(new Funcionario(
-                "Caio", LocalDate.of(1961, 2, 2),
+                "Caio", LocalDate.of(1961, 5, 2),
                 new BigDecimal("9836.14"), "Coordenador"));
 
         funcionarios.add(new Funcionario(
@@ -49,7 +49,7 @@ public class Principal {
                 new BigDecimal("19119.88"), "Diretor"));
 
         funcionarios.add(new Funcionario(
-                "Alice", LocalDate.of(1995, 5, 1),
+                "Alice", LocalDate.of(1995, 1, 5),
                 new BigDecimal("2234.68"), "Recepcionista"));
 
         funcionarios.add(new Funcionario(
