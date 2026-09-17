@@ -29,7 +29,7 @@ public class Principal {
 
     public static void main(String[] args) {
 
-        // 3.1 - Inserir todos os funcionários na mesma ordem da tabela.
+        // 3.1 - inserir todos os funcionários na mesma ordem da tabela;
         List<Funcionario> funcionarios = new ArrayList<>();
 
         funcionarios.add(new Funcionario(
@@ -71,7 +71,89 @@ public class Principal {
         funcionarios.add(new Funcionario(
                 "Helena", LocalDate.of(1996, 9, 2),
                 new BigDecimal("2799.93"), "Gerente"));
-        };
+        
+        // 3.2 - remover o funcionário João;
+        funcionarios.removeIf(funcionario ->
+                funcionario.getNome().equalsIgnoreCase("João"));
+
+        // 3.3 - imprimir todos os funcionários;
+        System.out.println("========== 3.3 - FUNCIONÁRIOS ==========");
+        imprimirFuncionarios(funcionarios);
+
+        // 3.4 - aumentar todos os salários em 10%;
+        funcionarios.forEach(funcionario -> {
+            BigDecimal novoSalario = funcionario.getSalario()
+                    .multiply(new BigDecimal("1.10"))
+                    .setScale(2, RoundingMode.HALF_UP);
+
+            funcionario.setSalario(novoSalario);
+        });
+
+        // 3.5 - agrupar por função em map;
+        Map<String, List<Funcionario>> funcionariosPorFuncao =
+                funcionarios.stream()
+                        .collect(Collectors.groupingBy(
+                                Funcionario::getFuncao,
+                                LinkedHashMap::new,
+                                Collectors.toList()
+                        ));
+
+        // 3.6 - imprimir funcionários agrupados por função;
+        System.out.println("\n========== 3.6 - AGRUPADOS POR FUNÇÃO ==========");
+        funcionariosPorFuncao.forEach((funcao, lista) -> {
+            System.out.println("\nFunção: " + funcao);
+            lista.forEach(Principal::imprimirFuncionario);
+        });
+
+        // 3.8 - funcionários que fazem aniversário nos meses 10 e 12;
+        System.out.println("\n========== 3.8 - ANIVERSARIANTES DE OUTUBRO E DEZEMBRO ==========");
+        funcionarios.stream()
+                .filter(funcionario -> {
+                    int mes = funcionario.getDataNascimento().getMonthValue();
+                    return mes == 10 || mes == 12;
+                })
+                .forEach(Principal::imprimirFuncionario);
+
+        // 3.9 - funcionário com maior idade;
+        Funcionario funcionarioMaisVelho = funcionarios.stream()
+                .min(Comparator.comparing(Funcionario::getDataNascimento))
+                .orElse(null);
+
+        int idade = calcularIdade(funcionarioMaisVelho.getDataNascimento());
+
+        System.out.println("\n========== 3.9 - FUNCIONÁRIO COM MAIOR IDADE ==========");
+        System.out.println("Nome: " + funcionarioMaisVelho.getNome());
+        System.out.println("Idade: " + idade + " anos");
+
+        // 3.10 - lista em ordem alfabética;
+        System.out.println("\n========== 3.10 - ORDEM ALFABÉTICA ==========");
+        funcionarios.stream()
+                .sorted(Comparator.comparing(
+                        Funcionario::getNome,
+                        String.CASE_INSENSITIVE_ORDER
+                ))
+                .forEach(Principal::imprimirFuncionario);
+
+        // 3.11 - total dos salários;
+        BigDecimal totalSalarios = funcionarios.stream()
+                .map(Funcionario::getSalario)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.println("\n========== 3.11 - TOTAL DOS SALÁRIOS ==========");
+        System.out.println("Total: R$ " + formatarNumero(totalSalarios));
+
+        // 3.12 - quantos salários mínimos ganha cada funcionário;
+        System.out.println("\n========== 3.12 - SALÁRIOS MÍNIMOS POR FUNCIONÁRIO ==========");
+        funcionarios.forEach(funcionario -> {
+            BigDecimal quantidade = funcionario.getSalario()
+                    .divide(SALARIO_MINIMO, 2, RoundingMode.HALF_UP);
+
+            System.out.println(funcionario.getNome()
+                    + " ganha aproximadamente "
+                    + formatarNumero(quantidade)
+                    + " salários mínimos.");
+        });
+    }
     
     private static void imprimirFuncionarios(List<Funcionario> funcionarios) {
         funcionarios.forEach(Principal::imprimirFuncionario);
