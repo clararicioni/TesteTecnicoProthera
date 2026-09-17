@@ -93,3 +93,7 @@ src/
     ├── Funcionario.java
     └── Principal.java
 ```
+
+## 📋 GitHub Projects
+
+[**Acessar a organização do projeto no GitHub Projects**](https://github.com/users/clararicioni/projects/12)
