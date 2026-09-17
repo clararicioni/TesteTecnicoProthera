@@ -72,4 +72,29 @@ public class Principal {
                 "Helena", LocalDate.of(1996, 9, 2),
                 new BigDecimal("2799.93"), "Gerente"));
         };
+    
+    private static void imprimirFuncionarios(List<Funcionario> funcionarios) {
+        funcionarios.forEach(Principal::imprimirFuncionario);
+    }
+
+    private static void imprimirFuncionario(Funcionario funcionario) {
+        System.out.println(
+                "Nome: " + funcionario.getNome()
+                        + " | Data de nascimento: "
+                        + funcionario.getDataNascimento().format(FORMATO_DATA)
+                        + " | Salário: R$ "
+                        + formatarNumero(funcionario.getSalario())
+                        + " | Função: " + funcionario.getFuncao()
+        );
+    }
+
+    private static int calcularIdade(LocalDate dataNascimento) {
+        return Period.between(dataNascimento, LocalDate.now()).getYears();
+    }
+
+    private static String formatarNumero(BigDecimal valor) {
+        FORMATO_NUMERO.setMinimumFractionDigits(2);
+        FORMATO_NUMERO.setMaximumFractionDigits(2);
+        return FORMATO_NUMERO.format(valor);
+    }
 }
